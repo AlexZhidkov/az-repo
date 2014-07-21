@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en" ng-app="Scorer">
+<head>
+	<script src="lib/angular/angular.min.js"></script>
+	<script src="controllers.js"></script>
+</head>
+<body>
+	<div ng-controller="ScorerCtrl">
+		<p>
+			{{prompt}} {{count1}} / {{count2}}
+			<button ng-click="undo()">Undo</button>
+		</p>
+		<button ng-click="pointLeft()">{{team1}}</button>
+		<button ng-click="pointRight()">{{team2}}</button>
+	</div>
+	<div>
+</body>
+</html>
