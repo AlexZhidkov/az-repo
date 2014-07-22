@@ -18,11 +18,11 @@
 <body>
     <div ng-controller="ScorerCtrl">
         <div>
-            {{nextServer}} {{lastScored}} Score: {{teamLeft.count}} / {{teamRight.count}}
+            Score: {{teamLeft.count}} / {{teamRight.count}}
             <button ng-click="undo()" ng-disabled="!lastScored">Undo</button>
         </div>
         <div>
-            {{teamLeft.lastServed}} - {{teamRight.lastServed}}  
+            Last served: {{teamLeft.lastServed}} - {{teamRight.lastServed}}  
         </div>
         <table>
             <tr>

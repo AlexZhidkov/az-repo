@@ -38,11 +38,11 @@ function ($scope, $window) {
     $scope.pointLeft = function () {
         $scope.teamLeft.count = $scope.teamLeft.count + 1;
         if ($scope.lastScored == "teamRight") {
-            $scope.teamRight.lastServed = nextServer;
+            $scope.teamRight.lastServed = $scope.nextServer;
             if ($scope.teamLeft.lastServed == "teamLeft.player1") {
-                nextServer = "teamLeft.player2"
+                $scope.nextServer = "teamLeft.player2"
             } else {
-                nextServer = "teamLeft.player1"
+                $scope.nextServer = "teamLeft.player1"
             }
         }
         $scope.lastScored = "teamLeft";
@@ -51,11 +51,11 @@ function ($scope, $window) {
     $scope.pointRight = function () {
         $scope.teamRight.count = $scope.teamRight.count + 1;
         if ($scope.lastScored == "teamLeft") {
-            $scope.teamLeft.lastServed = nextServer;
+            $scope.teamLeft.lastServed = $scope.nextServer;
             if ($scope.teamRight.lastServed == "teamRight.player1") {
-                nextServer = "teamRight.player2"
+                $scope.nextServer = "teamRight.player2"
             } else {
-                nextServer = "teamRight.player1"
+                $scope.nextServer = "teamRight.player1"
             }
         }
         $scope.lastScored = "teamRight";
