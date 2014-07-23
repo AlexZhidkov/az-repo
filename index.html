@@ -19,22 +19,29 @@
     <div ng-controller="ScorerCtrl">
         <div>
             Score: {{teamLeft.count}} / {{teamRight.count}}
+<<<<<<< HEAD
             <button ng-click="undo()" ng-disabled="!lastScored">Undo</button>
         </div>
         <div>
             Last served: {{teamLeft.lastServed}} - {{teamRight.lastServed}}  
+=======
+            <button ng-click="undo()" ng-disabled="history.length == 1">Undo</button>
+        </div>
+        <div>
+            test: 
+>>>>>>> origin/master
         </div>
         <table>
             <tr>
-                <td><div ng-show="nextServer == 'teamLeft.player1'">O</div></td>
+                <td><div ng-show="lastScored == 'teamLeft' && nextServer == 'player1'">O</div></td>
                 <td>{{teamLeft.player1}}</td>
-                <td><div ng-show="nextServer == 'teamRight.player1'">O</div></td>
+                <td><div ng-show="lastScored == 'teamRight' && nextServer == 'player1'">O</div></td>
                 <td>{{teamRight.player1}}</td>
             </tr>
             <tr>
-                <td><div ng-show="nextServer == 'teamLeft.player2'">O</div></td>
+                <td><div ng-show="lastScored == 'teamLeft' && nextServer == 'player2'">O</div></td>
                 <td>{{teamLeft.player2}}</td>
-                <td><div ng-show="nextServer == 'teamRight.player2'">O</div></td>
+                <td><div ng-show="lastScored == 'teamRight' && nextServer == 'player2'">O</div></td>
                 <td>{{teamRight.player2}}</td>
             </tr>
                
@@ -46,6 +53,9 @@
         <div>
             <button ng-click="switchSides()" ng-hide="!timeToSwitch()">Switch Sides</button>
         </div>
+        <ul>
+            <li ng-repeat="point in history"> {{point.teamLeft.count}} - {{point.teamRight.count}} lastScored: {{point.lastScored}}, nextToServe:{{point.nextToServe}}  </li>
+        </ul>
     </div>
 </body>
 </html>
