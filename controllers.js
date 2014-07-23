@@ -45,17 +45,10 @@ function ($scope, $window) {
         $scope.teamLeft.count = $scope.teamLeft.count + 1;
         if ($scope.lastScored == "teamRight") {
             $scope.teamRight.lastServed = $scope.nextServer;
-<<<<<<< HEAD
-            if ($scope.teamLeft.lastServed == "teamLeft.player1") {
-                $scope.nextServer = "teamLeft.player2"
-            } else {
-                $scope.nextServer = "teamLeft.player1"
-=======
             if ($scope.teamLeft.lastServed == "player1") {
                 $scope.nextServer = "player2"
             } else {
                 $scope.nextServer = "player1"
->>>>>>> origin/master
             }
         }
         $scope.lastScored = "teamLeft";
@@ -66,17 +59,10 @@ function ($scope, $window) {
         $scope.teamRight.count = $scope.teamRight.count + 1;
         if ($scope.lastScored == "teamLeft") {
             $scope.teamLeft.lastServed = $scope.nextServer;
-<<<<<<< HEAD
-            if ($scope.teamRight.lastServed == "teamRight.player1") {
-                $scope.nextServer = "teamRight.player2"
-            } else {
-                $scope.nextServer = "teamRight.player1"
-=======
             if ($scope.teamRight.lastServed == "player1") {
                 $scope.nextServer = "player2"
             } else {
                 $scope.nextServer = "player1"
->>>>>>> origin/master
             }
         }
         $scope.lastScored = "teamRight";

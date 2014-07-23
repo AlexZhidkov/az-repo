@@ -19,17 +19,10 @@
     <div ng-controller="ScorerCtrl">
         <div>
             Score: {{teamLeft.count}} / {{teamRight.count}}
-<<<<<<< HEAD
-            <button ng-click="undo()" ng-disabled="!lastScored">Undo</button>
-        </div>
-        <div>
-            Last served: {{teamLeft.lastServed}} - {{teamRight.lastServed}}  
-=======
             <button ng-click="undo()" ng-disabled="history.length == 1">Undo</button>
         </div>
         <div>
             test: 
->>>>>>> origin/master
         </div>
         <table>
             <tr>
