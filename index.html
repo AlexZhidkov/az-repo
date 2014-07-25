@@ -1,54 +1,82 @@
-<!doctype html>
-<html lang="en" ng-app="Scorer">
+﻿<!-- index.html -->
+<!DOCTYPE html>
+<html ng-app="scorerApp">
 <head>
+    <title></title>
+    <style>
+        /* This helps the ng-show/ng-hide animations start at the right place. */
+        /* Since Angular has this but needs to load, this gives us the class early. */
+        .ng-hide {
+            display: none !important;
+        }
+    </style>
+
     <meta charset="utf-8">
-    <title>HTML File</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/javascript">
+            // Must be first. IE10 mobile viewport fix
+            (function () {
+                if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                    var msViewportStyle = document.createElement("style");
+                    msViewportStyle.appendChild(document.createTextNode("@@-ms-viewport{width:auto!important}"));
+                    document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+                }
+            })();
+    </script>
+
+    <!-- load bootstrap and fontawesome via CDN -->
+    <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />-->
+    <!--<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">-->
+
+    <link rel="stylesheet" href="Content/font-awesome/css/font-awesome.min.css">
+    
+    <link href="Content/ie10-mobile-viewport-fix.css" rel="stylesheet" />
+    <link href="Content/themes/lnr/lnr.css" rel="stylesheet" />
+    <link href="Content/navbar-static-top.css" rel="stylesheet" />
+    <link href="Content/toastr.css" rel="stylesheet" />
+    <link href="Content/site.css" rel="stylesheet" />
 
     <script src="scripts/angular.js"></script>
     <script src="scripts/angular-resource.js"></script>
     <script src="scripts/angular-route.js"></script>
-    <script src="scripts/jquery-1.9.0.js"></script>
+    <script src="scripts/jquery-2.1.1.js"></script>
     <script src="scripts/bootstrap.js"></script>
     <script src="scripts/angular-ui/ui-bootstrap.js"></script>
     <script src="scripts/angular-ui/ui-bootstrap-tpls.js"></script>
     <script src="scripts/toastr.js"></script>
 
     <script src="controllers.js"></script>
+    <script src="models.js"></script>
+
 </head>
-<body>
-    <div ng-controller="ScorerCtrl">
-        <div>
-            Score: {{teamLeft.count}} / {{teamRight.count}}
-            <button ng-click="undo()" ng-disabled="history.length == 1">Undo</button>
-        </div>
-        <div>
-            test: 
-        </div>
-        <table>
-            <tr>
-                <td><div ng-show="lastScored == 'teamLeft' && nextServer == 'player1'">O</div></td>
-                <td>{{teamLeft.player1}}</td>
-                <td><div ng-show="lastScored == 'teamRight' && nextServer == 'player1'">O</div></td>
-                <td>{{teamRight.player1}}</td>
-            </tr>
-            <tr>
-                <td><div ng-show="lastScored == 'teamLeft' && nextServer == 'player2'">O</div></td>
-                <td>{{teamLeft.player2}}</td>
-                <td><div ng-show="lastScored == 'teamRight' && nextServer == 'player2'">O</div></td>
-                <td>{{teamRight.player2}}</td>
-            </tr>
-               
-        </table>
-        <div>
-            <button ng-click="pointLeft()" ng-disabled="timeToSwitch()">{{teamLeft.name}}</button>
-            <button ng-click="pointRight()" ng-disabled="timeToSwitch()">{{teamRight.name}}</button>
-        </div>
-        <div>
-            <button ng-click="switchSides()" ng-hide="!timeToSwitch()">Switch Sides</button>
-        </div>
-        <ul>
-            <li ng-repeat="point in history"> {{point.teamLeft.count}} - {{point.teamRight.count}} lastScored: {{point.lastScored}}, nextToServe:{{point.nextToServe}}  </li>
-        </ul>
-    </div>
+<body ng-controller="mainController">
+
+    <!-- HEADER AND NAVBAR -->
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">Name of Application</a>
+                </div>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="#pickTeams"><i class="fa fa-hospital-o"></i> New</a></li>
+                    <li><a href="#about"><i class="fa fa-shield"></i> About</a></li>
+                    <li><a href="#contact"><i class="fa fa-comment"></i> Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT AND INJECTED VIEWS -->
+    <div class="container" data-ng-view></div>
+
+    <footer class="text-center">
+        This is footer
+    </footer>
+
 </body>
 </html>

@@ -1,39 +1,70 @@
-var myApp = angular.module('Scorer', []);
+var scorerApp = angular.module('scorerApp', ['ngRoute']);
 
-myApp.controller('ScorerCtrl', ['$scope', '$window',
-function ($scope, $window) {
+// configure routes
+scorerApp.config(function ($routeProvider) {
+    $routeProvider
+        .when('/', {
+            templateUrl: 'pages/home.html',
+            controller: 'mainController'
+        })
+        .when('/pickTeams', {
+            templateUrl: 'pages/teams.html',
+            controller: 'mainController'
+        })
+        .when('/liveScoring', {
+            templateUrl: 'pages/scoring.html',
+            controller: 'scorerCtrl'
+        })
+        .when('/about', {
+            templateUrl: 'pages/about.html',
+            controller: 'aboutController'
+        })
+        .when('/contact', {
+            templateUrl: 'pages/contact.html',
+            controller: 'contactController'
+        });
+});
 
-    $scope.switchOnPoints = 7;
-    $scope.team1 = {
-        'name': 'East',
-        'count': 0,
-        'player1': 'East1',
-        'player2': 'East2',
-        'lastServed': ''
-    };
-    $scope.team2 = {
-        'name': 'West',
-        'count': 0,
-        'player1': 'West1',
-        'player2': 'West2',
-        'lastServed': ''
-    };
+scorerApp.controller('aboutController', function ($scope) {
+    $scope.message = 'About Controller';
+});
 
-    $scope.history = [];
+scorerApp.controller('pickTeamsCtrl', function ($scope) {
+    $scope.teamsSet = true;
 
+});
+
+scorerApp.controller('contactController', function ($scope) {
+    $scope.message = 'Contact us!';
+});
+
+scorerApp.controller('mainController', ['$scope', 'scorerModel',
+function ($scope, scorerModel) {
+    $scope.data = scorerModel;
+    $scope.message = 'Main Controller';
+}]);
+
+scorerApp.controller('scorerCtrl', ['$scope', '$window', 'scorerModel',
+function ($scope, $window, scorerModel) {
+    $scope.data = scorerModel;
     $scope.Math = $window.Math;
 
-    $scope.teamLeft = $scope.team1;
-    $scope.teamRight = $scope.team2;
+    $scope.teamLeft = $scope.data.team1;
+    $scope.teamRight = $scope.data.team2;
 
     $scope.lastScored = "teamLeft";
     $scope.nextServer = "player1";
 
-    var isSwitched = true;
+    $scope.init = function () {
+        //$scope.data.historyAdd();
+        //isSwitched = true;
+    };
+    // runs once per controller instantiation
+    $scope.init();
 
     $scope.historyAdd = function () {
-        isSwitched = false;
-        $scope.history.push({
+        $scope.isSwitched = false;
+        $scope.data.history.push({
             teamLeft: angular.copy($scope.teamLeft),
             teamRight: angular.copy($scope.teamRight),
             lastScored: $scope.lastScored,
@@ -70,9 +101,9 @@ function ($scope, $window) {
     };
 
     $scope.undo = function () {
-        $scope.history.splice($scope.history.length - 1, 1);
+        $scope.data.history.pop();
 
-        var point = angular.copy($scope.history[$scope.history.length - 1]);
+        var point = angular.copy($scope.data.history[$scope.data.history.length - 1]);
 
         $scope.teamLeft = point.teamLeft;
         $scope.teamRight = point.teamRight;
@@ -93,18 +124,17 @@ function ($scope, $window) {
         } else {
             $scope.lastScored = "teamLeft";
         }
-        isSwitched = true;
+        $scope.isSwitched = true;
     };
 
     $scope.timeToSwitch = function () {
-        if (isSwitched) {
+        if ($scope.isSwitched) {
             return false;
         }
         value = ($scope.teamLeft.count + $scope.teamRight.count) / $scope.switchOnPoints;
         return $scope.lastScored && value == $scope.Math.round(value);
     }
 
-    $scope.historyAdd();
-    isSwitched = true;
 
 }]);
+
