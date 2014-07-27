@@ -7,6 +7,10 @@ scorerApp.config(function ($routeProvider) {
             templateUrl: 'pages/home.html',
             controller: 'mainController'
         })
+        .when('/setup', {
+            templateUrl: 'pages/setup.html',
+            controller: 'mainController'
+        })
         .when('/pickTeams', {
             templateUrl: 'pages/teams.html',
             controller: 'mainController'
@@ -52,12 +56,18 @@ function ($scope, $window, scorerModel) {
     $scope.teamLeft = $scope.data.team1;
     $scope.teamRight = $scope.data.team2;
 
+    $scope.teamLeft.setsWon = 0;
+    $scope.teamRight.setsWon = 0;
+    $scope.currentSet = 0;
     $scope.lastScored = "teamLeft";
     $scope.nextServer = "player1";
 
     $scope.init = function () {
-        //$scope.data.historyAdd();
-        //isSwitched = true;
+        $scope.teamLeft.count = 0;
+        $scope.teamRight.count = 0;
+        $scope.isSwitched = true;
+        $scope.isGameStarted = false;
+
     };
     // runs once per controller instantiation
     $scope.init();
@@ -127,12 +137,38 @@ function ($scope, $window, scorerModel) {
         $scope.isSwitched = true;
     };
 
+    $scope.startGame = function () {
+        $scope.isGameStarted = true;
+        $scope.firstServe = $scope.lastScored;
+        $scope.currentSet = $scope.currentSet + 1;
+    }
+
     $scope.timeToSwitch = function () {
         if ($scope.isSwitched) {
             return false;
         }
-        value = ($scope.teamLeft.count + $scope.teamRight.count) / $scope.switchOnPoints;
+        value = ($scope.teamLeft.count + $scope.teamRight.count) / $scope.data.game.switchOnPoints;
         return $scope.lastScored && value == $scope.Math.round(value);
+    }
+
+    $scope.isGameEnd = function () {
+        if ($scope.currentSet == $scope.data.game.numberOfSets) {
+            $scope.currentPointsToWin = $scope.data.game.pointsToWinLastSet;
+        }
+        else {
+            $scope.currentPointsToWin = $scope.data.game.pointsToWin;
+        }
+        if ($scope.teamLeft.count >= $scope.currentPointsToWin && $scope.teamLeft.count > $scope.teamRight.count + 1) {
+            $scope.teamLeft.setsWon = $scope.teamLeft.setsWon + 1;
+            $scope.init();
+            return true;
+        }
+        else if ($scope.teamRight.count >= $scope.currentPointsToWin && $scope.teamRight.count > $scope.teamLeft.count + 1) {
+            $scope.teamRight.setsWon = $scope.teamRight.setsWon + 1;
+            $scope.init();
+            return true;
+        }
+        return false;
     }
 
 

@@ -2,6 +2,12 @@
     <div class="panel-heading">Live scoring</div>
     <div class="panel-body">
         <div class="row">
+            Sets: {{teamLeft.setsWon}} / {{teamRight.setsWon}}
+        </div>
+        <div class="row" ng-show="isGameEnd()">
+            GAME !
+        </div>
+        <div class="row">
             <h1>
                 Score: {{teamLeft.count}} / {{teamRight.count}}
             </h1>
@@ -16,16 +22,22 @@
                         <div class=" col-xs-1 ng-hide" ng-show="lastScored == 'teamLeft' && nextServer == 'player1'"><i class="fa fa-life-ring"></i></div>
                     </td>
                     <td>
-                        <div class="col-xs-5">
+                        <div class="col-xs-5" ng-hide="(!isGameStarted) || (teamLeft.count == 1 && firstServe == 'teamRight')">
                             {{teamLeft.player1}}
+                        </div>
+                        <div class="col-xs-5" ng-show="(!isGameStarted) || (teamLeft.count == 1 && firstServe == 'teamRight')">
+                            <a href="" ng-click="lastScored = 'teamLeft'; nextServer = 'player1'">{{teamLeft.player1}}</a>
                         </div>
                     </td>
                     <td class="col-md-1">
                         <div class="col-xs-1 ng-hide" ng-show="lastScored == 'teamRight' && nextServer == 'player1'"><i class="fa fa-life-ring"></i> </div>
                     </td>
                     <td>
-                        <div class="col-xs-5">
+                        <div class="col-xs-5" ng-hide="(!isGameStarted) || (teamRight.count == 1 && firstServe == 'teamLeft')">
                             {{teamRight.player1}}
+                        </div>
+                        <div class="col-xs-5" ng-show="(!isGameStarted) || (teamRight.count == 1 && firstServe == 'teamLeft')">
+                            <a href="" ng-click="lastScored = 'teamRight'; nextServer = 'player1'">{{teamRight.player1}}</a>
                         </div>
                     </td>
                 </tr>
@@ -33,33 +45,47 @@
         </div>
         <div class="row">
             <div class="col-xs-1" ng-show="lastScored == 'teamLeft' && nextServer == 'player2'"><i class="fa fa-life-ring"></i> </div>
-            <div class="col-xs-5">{{teamLeft.player2}}</div>
+            <div class="col-xs-5" ng-hide="(!isGameStarted) || (teamLeft.count == 1 && firstServe == 'teamRight')">{{teamLeft.player2}}</div>
+            <div class="col-xs-5" ng-show="(!isGameStarted) || (teamLeft.count == 1 && firstServe == 'teamRight')">
+                <a href="" ng-click="lastScored = 'teamLeft'; nextServer = 'player2'">{{teamLeft.player2}}</a>
+            </div>
+
             <div class="col-xs-1" ng-show="lastScored == 'teamRight' && nextServer == 'player2'"><i class="fa fa-life-ring"></i> </div>
-            <div class="col-xs-5">{{teamRight.player2}}</div>
+            <div class="col-xs-5" ng-hide="(!isGameStarted) || (teamRight.count == 1 && firstServe == 'teamLeft')">{{teamRight.player2}}</div>
+            <div class="col-xs-5" ng-show="(!isGameStarted) || (teamRight.count == 1 && firstServe == 'teamLeft')">
+                <a href="" ng-click="lastScored = 'teamRight'; nextServer = 'player2'">{{teamRight.player2}}</a>
+            </div>
         </div>
         <div class="row">
             <div class="col-xs-6">
-                <button type="button" class="btn btn-default btn-block active" ng-click="pointLeft()" ng-disabled="timeToSwitch()">
+                <button type="button" class="btn btn-default btn-block active" ng-click="pointLeft()" ng-disabled="(!isGameStarted) || timeToSwitch()">
                     <i class="fa fa-hand-o-left"></i> {{teamLeft.name}}
                 </button>
             </div>
             <div class="col-xs-6">
-                <button type="button" class="btn btn-default btn-block active" ng-click="pointRight()" ng-disabled="timeToSwitch()">
+                <button type="button" class="btn btn-default btn-block active" ng-click="pointRight()" ng-disabled="(!isGameStarted) || timeToSwitch()">
                     {{teamRight.name}} <i class="fa fa-hand-o-right"></i>
                 </button>
             </div>
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <button type="button" class="btn btn-block btn-lg active" ng-click="switchSides()" ng-hide="!timeToSwitch()">
+                <button type="button" class="btn btn-block btn-lg active" ng-click="switchSides()" ng-show="!isGameStarted || timeToSwitch()">
                     <i class="fa fa-refresh fa-spin"></i> Switch Sides
                 </button>
             </div>
         </div>
-<!--
-    <ul>
-        <li ng-repeat="point in data.history"> {{point.teamLeft.count}} - {{point.teamRight.count}} lastScored: {{point.lastScored}}, nextToServe:{{point.nextToServe}}  </li>
-    </ul>
--->
+        <div class="row" ng-hide="isGameStarted">
+            <div class=" col-xs-12">
+                <button type="button" class="btn btn-block btn-lg active" ng-click="startGame()">
+                    <i class="fa fa-play"></i> Start Game
+                </button>
+            </div>
+        </div>
+        <!--
+            <ul>
+                <li ng-repeat="point in data.history"> {{point.teamLeft.count}} - {{point.teamRight.count}} lastScored: {{point.lastScored}}, nextToServe:{{point.nextToServe}}  </li>
+            </ul>
+        -->
     </div>
 </div>

@@ -1,0 +1,24 @@
+﻿<div class="panel panel-default col-md-4">
+    <div class="panel-heading">Game settings</div>
+    <div class="panel-body">
+        <form role="form" name="gameSettings" novalidate>
+            <div class="form-group">
+                <label for="numberOfSets">Number of sets:</label>
+                <input type="text" class="form-control" id="numberOfSets" placeholder="Enter number of sets to play" ng-model="data.game.numberOfSets">
+            </div>
+            <div class="form-group">
+                <label for="pointsToWin">Points to win:</label>
+                <input type="text" class="form-control" id="pointsToWin" placeholder="" ng-model="data.game.pointsToWin">
+            </div>
+            <div class="form-group">
+                <label for="pointsToWinLastSet">Points to win deciding set:</label>
+                <input type="text" class="form-control" id="pointsToWinLastSet" placeholder="Enter how many points win last set" ng-model="data.game.pointsToWinLastSet">
+            </div>
+            <div class="form-group">
+                <label for="switchOnPoints">Switch on points:</label>
+                <input type="text" class="form-control" id="switchOnPoints" placeholder="Enter how many points to switch sides" ng-model="data.game.switchOnPoints">
+            </div>
+        </form>
+    </div>
+</div>
+
