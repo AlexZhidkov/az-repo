@@ -1,0 +1,36 @@
+﻿<div id="top" class="row">
+    <button class="btn btn-default pull-right" type="button" ng-click="gamesExpanded = !gamesExpanded"><i ng-class="{true: 'glyphicon glyphicon-chevron-up' , false: 'glyphicon glyphicon-chevron-down' }[gamesExpanded]"></i></button>
+
+    <ul class="list-unstyled" ng-show="gamesExpanded">
+        <li>
+            <label><input type="checkbox" id="mirror" ng-model="isSidesMirrored"> {{'MIRROR_SIDES' | translate}}</label>
+        </li>
+        <li>
+            <label><input type="checkbox" id="speak" ng-model="isSpeak"> {{'PRONOUNCE_SCORE' | translate}}</label>
+        </li>
+        <li ng-repeat="score in scores">
+            <a href="" type="button" ng-click="connectToGame(scores.$keyAt($index))">{{score.name1}} {{'VS' | translate}} {{score.name2}} - {{score.1}} : {{score.2}}</a>
+        </li>
+    </ul>
+</div>
+<div class="row">
+    <table class="table">
+        <tr>
+            <td class="text-left" ng-hide="isSidesMirrored"><strong>{{gameScore.name1}}</strong></td>
+            <td class="text-left" ng-show="isSidesMirrored"><strong>{{gameScore.name2}}</strong></td>
+            <td></td>
+            <td class="text-right" ng-hide="isSidesMirrored"><strong>{{gameScore.name2}}</strong></td>
+            <td class="text-right" ng-show="isSidesMirrored"><strong>{{gameScore.name1}}</strong></td>
+        </tr>
+    </table>
+    <table class="table" style='font-size: 30vw'>
+        <tr>
+            <td class="text-right" ng-hide="isSidesMirrored"><strong>{{gameScore.1}}</strong></td>
+            <td class="text-right" ng-show="isSidesMirrored"><strong>{{gameScore.2}}</strong></td>
+            <td class="text-center">:</td>
+            <td class="text-left" ng-hide="isSidesMirrored"><strong>{{gameScore.2}}</strong></td>
+            <td class="text-left" ng-show="isSidesMirrored"><strong>{{gameScore.1}}</strong></td>
+        </tr>
+    </table>
+</div>
+

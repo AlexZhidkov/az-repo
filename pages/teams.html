@@ -1,33 +1,45 @@
-﻿<div class="panel panel-default col-md-4">
-    <div class="panel-heading">Pick Teams</div>
+﻿<!--<div bvs-team-input></div>-->
+<!--<bvs-team-input-old></bvs-team-input-old>-->
+<div id="top" class="panel panel-default">
+    <div class="panel-heading">{{'TEAM' | translate}} 1</div>
     <div class="panel-body">
         <form role="form" name="teamsForm" novalidate>
-            <div class="form-group">
-                <label for="team1Name">Team 1 Name:</label>
-                <input type="text" class="form-control" id="team1Name" placeholder="Enter Team1 Name" ng-model="data.team1.name">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="{{'ENTER_TEAM1_NAME' | translate}}" id="team1Name" ng-model="data.team1.name">
+                <div class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-click="makeTeam1Name()"><i class="glyphicon glyphicon-pencil"></i></button>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="team1Player1Name">Player 1:</label>
-                <input type="text" class="form-control" id="team1Player1Name" placeholder="Enter Player's Name" ng-model="data.team1.player1">
-            </div>
-            <div class="form-group">
-                <label for="team1Player2Name">Player 2:</label>
-                <input type="text" class="form-control" id="team1Player2Name" placeholder="Enter Player's Name" ng-model="data.team1.player2">
-            </div>
-            <div class="form-group">
-                <label for="team2Name">Team 2 Name:</label>
-                <input type="text" class="form-control" id="team2Name" placeholder="Enter Team2 Name" ng-model="data.team2.name">
-            </div>
-            <div class="form-group">
-                <label for="team2Player1Name">Player 1:</label>
-                <input type="text" class="form-control" id="team2Player1Name" placeholder="Enter Player's Name" ng-model="data.team2.player1">
-            </div>
-            <div class="form-group">
-                <label for="team2Player2Name">Player 2:</label>
-                <input type="text" class="form-control" id="team2Player2Name" placeholder="Enter Player's Name" ng-model="data.team2.player2">
-            </div>
-            <a href="#liveScoring" role="button" class="btn btn-default active">Start Game</a>
+            <bvs-player-input team="1" player="1"></bvs-player-input>
+            <bvs-player-input team="1" player="2"></bvs-player-input>
         </form>
     </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">{{'TEAM' | translate}} 2</div>
+    <div class="panel-body">
+        <form role="form" name="teamsForm" novalidate>
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="{{'ENTER_TEAM2_NAME' | translate}}" id="team2Name" ng-model="data.team2.name">
+                <div class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-click="makeTeam2Name()"><i class="glyphicon glyphicon-pencil"></i></button>
+                </div>
+            </div>
+            <bvs-player-input team="2" player="1"></bvs-player-input>
+            <bvs-player-input team="2" player="2"></bvs-player-input>
+        </form>
+    </div>
+</div>
+<div>
+    <button type="button" id="startNewMatch" class="btn btn-default active" ng-click="startNewMatch()" translate>
+        RESET_SCORE_NEW_GAME
+    </button>
+</div>
+<div class="alert alert-info" role="alert" ng-show="data.gameSettings.isShowInfo">
+    <p>{{'ENTER_PLAYER_NAMES' | translate}} <i class="glyphicon glyphicon-pencil"></i> {{'GENERATE_TEAM_NAME' | translate}}</p>
+    <p>{{'SAVING_STATS' | translate}} <i class="glyphicon glyphicon-asterisk"></i>.</p>
+    <p>{{'PICK_PLAYER' | translate}} <i class="glyphicon glyphicon-chevron-down"></i> {{'FILTER_LIST' | translate}}</p>
+    <p>{{'USE_BUTTON' | translate}} <i class="glyphicon glyphicon-remove"></i> {{'DONT_SAVE_STATS' | translate}}</p>
 </div>
 

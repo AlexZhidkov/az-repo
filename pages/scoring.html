@@ -1,91 +1,154 @@
-﻿<div class="panel panel-default col-md-4">
-    <div class="panel-heading">Live scoring</div>
-    <div class="panel-body">
-        <div class="row">
-            Sets: {{teamLeft.setsWon}} / {{teamRight.setsWon}}
-        </div>
-        <div class="row" ng-show="isGameEnd()">
-            GAME !
-        </div>
-        <div class="row">
-            <h1>
-                Score: {{teamLeft.count}} / {{teamRight.count}}
-            </h1>
-            <button type="button" class="btn btn-default active pull-right" ng-click="undo()" ng-disabled="data.history.length == 1">
-                <i class="fa fa-eraser"></i>Undo
-            </button>
-        </div>
-        <div class="row">
-            <table>
-                <tr>
-                    <td class="col-md-1">
-                        <div class=" col-xs-1 ng-hide" ng-show="lastScored == 'teamLeft' && nextServer == 'player1'"><i class="fa fa-life-ring"></i></div>
-                    </td>
-                    <td>
-                        <div class="col-xs-5" ng-hide="(!isGameStarted) || (teamLeft.count == 1 && firstServe == 'teamRight')">
-                            {{teamLeft.player1}}
-                        </div>
-                        <div class="col-xs-5" ng-show="(!isGameStarted) || (teamLeft.count == 1 && firstServe == 'teamRight')">
-                            <a href="" ng-click="lastScored = 'teamLeft'; nextServer = 'player1'">{{teamLeft.player1}}</a>
-                        </div>
-                    </td>
-                    <td class="col-md-1">
-                        <div class="col-xs-1 ng-hide" ng-show="lastScored == 'teamRight' && nextServer == 'player1'"><i class="fa fa-life-ring"></i> </div>
-                    </td>
-                    <td>
-                        <div class="col-xs-5" ng-hide="(!isGameStarted) || (teamRight.count == 1 && firstServe == 'teamLeft')">
-                            {{teamRight.player1}}
-                        </div>
-                        <div class="col-xs-5" ng-show="(!isGameStarted) || (teamRight.count == 1 && firstServe == 'teamLeft')">
-                            <a href="" ng-click="lastScored = 'teamRight'; nextServer = 'player1'">{{teamRight.player1}}</a>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="row">
-            <div class="col-xs-1" ng-show="lastScored == 'teamLeft' && nextServer == 'player2'"><i class="fa fa-life-ring"></i> </div>
-            <div class="col-xs-5" ng-hide="(!isGameStarted) || (teamLeft.count == 1 && firstServe == 'teamRight')">{{teamLeft.player2}}</div>
-            <div class="col-xs-5" ng-show="(!isGameStarted) || (teamLeft.count == 1 && firstServe == 'teamRight')">
-                <a href="" ng-click="lastScored = 'teamLeft'; nextServer = 'player2'">{{teamLeft.player2}}</a>
-            </div>
+﻿<div id="top" class="row">
+    {{'SETS' | translate}}: {{data.game.teamLeft.setsWon}} / {{data.game.teamRight.setsWon}}
+    <!--    Game time: {{gameTime() | date:'H:mm'}}-->
+</div>
+<div class="row">
+    {{data.game.gameEnding}}
+</div>
+<div class="row">
+    <!--http://css-tricks.com/viewport-sized-typography/-->
+    <span ng-show="isMobile" style='font-size: 18vw'>{{data.game.teamLeft.count}} : {{data.game.teamRight.count}}</span>
+    <span ng-show="!isMobile" style='font-size: 5vw'>{{data.game.teamLeft.count}} : {{data.game.teamRight.count}}</span>
+    <div class="btn-group-vertical pull-right">
+        <button type="button" class="btn btn-default active" ng-click="undo()" ng-disabled="data.history.length < 2">
+            <i class="fa fa-undo"></i> {{'UNDO' | translate}}
+        </button>
+        <button type="button" class="btn btn-default active" ng-click="sayScore(true)">
+            <i class="fa fa-comment-o"></i> {{'SAY_AGAIN' | translate}}
+        </button>
+        <!--http://soundbible.com/tags-whistle.html-->
+        <!--http://ngmodules.org/modules/ngAudio
+        <button type="button" class="btn btn-default active" ng-click="whistle()">
+            <i class="fa fa-bullhorn"></i> Whistle
+        </button>-->
+    </div>
+</div>
+<div class="row">
+    <table class="col-xs-12 borderless table-condensed">
+        <tr>
+            <td bvs-scoring-player bvs-team="Left" bvs-player="1"></td>
+            <td bvs-scoring-player bvs-team="Right" bvs-player="1"></td>
+        </tr>
+        <tr>
+            <td bvs-scoring-player bvs-team="Left" bvs-player="2"></td>
+            <td bvs-scoring-player bvs-team="Right" bvs-player="2"></td>
+        </tr>
+    </table>
+</div>
 
-            <div class="col-xs-1" ng-show="lastScored == 'teamRight' && nextServer == 'player2'"><i class="fa fa-life-ring"></i> </div>
-            <div class="col-xs-5" ng-hide="(!isGameStarted) || (teamRight.count == 1 && firstServe == 'teamLeft')">{{teamRight.player2}}</div>
-            <div class="col-xs-5" ng-show="(!isGameStarted) || (teamRight.count == 1 && firstServe == 'teamLeft')">
-                <a href="" ng-click="lastScored = 'teamRight'; nextServer = 'player2'">{{teamRight.player2}}</a>
-            </div>
-        </div>
+<div class="btn-group btn-group-justified">
+    <div class="btn-group">
+        <button type="button" class="btn btn-default btn-lg active" ng-click="processPoint('teamLeft')" ng-disabled="(!data.game.isGameStarted) || timeToSwitch()">
+            <i class="fa fa-hand-o-left"></i> {{data.game.teamLeft.name}}
+        </button>
+    </div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-default btn-lg active" ng-click="processPoint('teamRight')" ng-disabled="(!data.game.isGameStarted) || timeToSwitch()">
+            {{data.game.teamRight.name}} <i class="fa fa-hand-o-right"></i>
+        </button>
+    </div>
+</div>
+<div class="row">
+    <button type="button" class="btn btn-block btn-lg active" ng-click="switchEnds()" ng-show="!data.game.isGameStarted || timeToSwitch()">
+        <i class="fa fa-refresh fa-spin"></i> {{'SWITCH_ENDS' | translate}}
+    </button>
+</div>
+<div class="alert alert-danger" role="alert" ng-show="isChooseServer('teamRight') || isChooseServer('teamLeft')" translate>
+    CHOOSE_NEXT_SERVER
+</div>
+<div class="row" ng-show="data.game.nextServer && !data.game.isGameStarted">
+    <button type="button" class="btn btn-block btn-lg active" ng-click="startGame()">
+        <i class="fa fa-play"></i> {{data.game.startButtonMessage | translate}}
+    </button>
+</div>
+
+<div class="row" ng-show="data.gameSettings.isCollectStats && (data.game.teamLeft.count + data.game.teamRight.count > 0)">
+    <div>
+        <label>{{'SERVE' | translate}}</label>
+    </div>
+    <table class="borderless table-condensed">
+        <tr>
+            <td>
+                {{data.game.stats.servePlayer.nik}}
+            </td>
+            <td>
+                <bvs-stats-outcome bvs-name="serve" bvs-model="data.game.stats.serve"
+                                   bvs-outcomes="{'value':2, 'text':&#39{{'IN_PLAY' | translate}}&#39}, {'value':3, 'text':&#39{{'ACE' | translate}}&#39}, {'value':1, 'text':&#39{{'MISTAKE' | translate}}&#39}">
+                </bvs-stats-outcome>
+            </td>
+        </tr>
+    </table>
+    <div>
+        <label>{{'RECEIVE' | translate}}</label>
+    </div>
+    <table class="borderless table-condensed">
+        <tr>
+            <td>
+                <select class="form-control" id="receivePlayer" ng-model="data.game.stats.receivePlayer" name="receivePlayer" ng-options="receivePlayer.nik for receivePlayer in data.players">
+                    <option value="" translate>SELECT_PLAYER</option>
+                </select>
+            </td>
+            <td>
+                <bvs-stats-outcome bvs-name="receive" bvs-model="data.game.stats.receive" bvs-outcomes="{'value':2, 'text':&#39{{'IN_PLAY' | translate}}&#39}, {'value':3, 'text':&#39{{'GOOD' | translate}}&#39}, {'value':1, 'text':&#39{{'MISTAKE' | translate}}&#39}"></bvs-stats-outcome>
+            </td>
+        </tr>
+    </table>
+    <div>
+        <label>{{'SET' | translate}}</label>
+        <span class="glyphicon glyphicon-plus pull-right" ng-click="addStatSet()"></span>
+    </div>
+    <table class="borderless table-condensed">
+        <tr ng-repeat="set in data.game.stats.sets">
+            <td>
+                <select class="form-control" id="setPlayer" ng-model="set.Player" name="setPlayer" ng-options="setPlayer.nik for setPlayer in data.players">
+                    <option value="" translate>SELECT_PLAYER</option>
+                </select>
+            </td>
+            <td>
+                <bvs-stats-outcome bvs-name="set" bvs-model="set.outcome" bvs-outcomes="{'value':2, 'text':&#39{{'IN_PLAY' | translate}}&#39}, {'value':3, 'text':&#39{{'GOOD' | translate}}&#39}, {'value':1, 'text':&#39{{'MISTAKE' | translate}}&#39}"></bvs-stats-outcome>
+            </td>
+        </tr>
         <div class="row">
-            <div class="col-xs-6">
-                <button type="button" class="btn btn-default btn-block active" ng-click="pointLeft()" ng-disabled="(!isGameStarted) || timeToSwitch()">
-                    <i class="fa fa-hand-o-left"></i> {{teamLeft.name}}
-                </button>
-            </div>
-            <div class="col-xs-6">
-                <button type="button" class="btn btn-default btn-block active" ng-click="pointRight()" ng-disabled="(!isGameStarted) || timeToSwitch()">
-                    {{teamRight.name}} <i class="fa fa-hand-o-right"></i>
-                </button>
-            </div>
         </div>
-        <div class="row">
-            <div class="col-xs-12">
-                <button type="button" class="btn btn-block btn-lg active" ng-click="switchSides()" ng-show="!isGameStarted || timeToSwitch()">
-                    <i class="fa fa-refresh fa-spin"></i> Switch Sides
-                </button>
-            </div>
+    </table>
+    <table class="borderless table-condensed">
+        <div>
+            <label>{{'ATTACK' | translate}}</label>
+            <span class="glyphicon glyphicon-plus pull-right" ng-click="addStatAttack()"></span>
         </div>
-        <div class="row" ng-hide="isGameStarted">
-            <div class=" col-xs-12">
-                <button type="button" class="btn btn-block btn-lg active" ng-click="startGame()">
-                    <i class="fa fa-play"></i> Start Game
-                </button>
-            </div>
+        <tr ng-repeat="attack in data.game.stats.attacks">
+            <td>
+                <select class="form-control" id="attackPlayer" ng-model="attack.Player" name="attackPlayer" ng-options="attackPlayer.nik for attackPlayer in data.players">
+                    <option value="" translate>SELECT_PLAYER</option>
+                </select>
+            </td>
+            <td>
+                <bvs-stats-outcome bvs-name="attack" bvs-model="attack.outcome" bvs-outcomes="{'value':2, 'text':&#39{{'IN_PLAY' | translate}}&#39}, {'value':3, 'text':&#39{{'KILL' | translate}}&#39}, {'value':1, 'text':&#39{{'MISTAKE' | translate}}&#39}"></bvs-stats-outcome>
+            </td>
+        </tr>
+    </table>
+    <table class="borderless table-condensed">
+        <div>
+            <label for="block" translate>BLOCK</label>
+            <span class="glyphicon glyphicon-plus pull-right" ng-click="addStatBlock()"></span>
         </div>
-        <!--
-            <ul>
-                <li ng-repeat="point in data.history"> {{point.teamLeft.count}} - {{point.teamRight.count}} lastScored: {{point.lastScored}}, nextToServe:{{point.nextToServe}}  </li>
-            </ul>
-        -->
+        <tr ng-repeat="block in data.game.stats.blocks">
+            <td>
+                <select class="form-control" id="blockPlayer" ng-model="block.player" name="blockPlayer" ng-options="blockPlayer.nik for blockPlayer in data.players">
+                    <option value="" translate>SELECT_PLAYER</option>
+                </select>
+            </td>
+            <td>
+                <bvs-stats-outcome bvs-name="block" bvs-model="block.outcome" bvs-outcomes="{'value':2, 'text':&#39{{'IN_PLAY' | translate}}&#39}, {'value':3, 'text':&#39{{'KILL' | translate}}&#39}, {'value':1, 'text':&#39{{'MISTAKE' | translate}}&#39}"></bvs-stats-outcome>
+            </td>
+        </tr>
+    </table>
+    <div class="row">
+        <button type="button" class="btn btn-default active pull-right" ng-click="collectStats()" translate>
+            <i class="fa fa-save"></i> SAVE
+        </button>
+    </div>
+    <div class="alert alert-info" role="alert" ng-show="data.gameSettings.isShowInfo" translate>
+        SCORING_SAVE_INFO
     </div>
 </div>

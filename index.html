@@ -13,17 +13,17 @@
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
     <script type="text/javascript">
-            // Must be first. IE10 mobile viewport fix
-            (function () {
-                if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
-                    var msViewportStyle = document.createElement("style");
-                    msViewportStyle.appendChild(document.createTextNode("@@-ms-viewport{width:auto!important}"));
-                    document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
-                }
-            })();
+        // Must be first. IE10 mobile viewport fix
+        (function () {
+            if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                var msViewportStyle = document.createElement("style");
+                msViewportStyle.appendChild(document.createTextNode("@@-ms-viewport{width:auto!important}"));
+                document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+            }
+        })();
     </script>
 
     <!-- load bootstrap and fontawesome via CDN -->
@@ -31,49 +31,69 @@
     <!--<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">-->
 
     <link rel="stylesheet" href="Content/font-awesome/css/font-awesome.min.css">
-    
+
     <link href="Content/ie10-mobile-viewport-fix.css" rel="stylesheet" />
     <link href="Content/themes/lnr/lnr.css" rel="stylesheet" />
-    <link href="Content/navbar-static-top.css" rel="stylesheet" />
+    <!--<link href="Content/normalize.css" rel="stylesheet" />-->
     <link href="Content/toastr.css" rel="stylesheet" />
+    <link href="Content/navbar-static-top.css" rel="stylesheet" />
     <link href="Content/site.css" rel="stylesheet" />
 
-    <script src="scripts/angular.js"></script>
-    <script src="scripts/angular-resource.js"></script>
-    <script src="scripts/angular-route.js"></script>
     <script src="scripts/jquery-2.1.1.js"></script>
-    <script src="scripts/bootstrap.js"></script>
-    <script src="scripts/angular-ui/ui-bootstrap.js"></script>
-    <script src="scripts/angular-ui/ui-bootstrap-tpls.js"></script>
-    <script src="scripts/toastr.js"></script>
+    <script src="scripts/jquery-ui.js"></script>
 
-    <script src="controllers.js"></script>
+    <script src="scripts/angular.js"></script>
+    <script src="scripts/angular-resource.min.js"></script>
+    <script src="scripts/angular-route.min.js"></script>
+    <script src='scripts/angular-cookies.min.js'></script>
+    <script src="scripts/angular-translate.min.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
+    <script src="scripts/angular-ui/ui-bootstrap.min.js"></script>
+    <script src="scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
+
+    <script src="bower_components/firebase/firebase.js"></script>
+    <script src="bower_components/angularfire/dist/angularfire.min.js"></script>
+    <script src="bower_components/firebase-simple-login/firebase-simple-login.js"></script>
+
+    <script src="app.js"></script>
     <script src="models.js"></script>
+    <script src="directives.js"></script>
+    <!-- <script src="translations.js"></script> -->
+    <script src="scorer-ctrl.js"></script>
+    <script src="login-ctrl.js"></script>
+    <script src="stats-ctrl.js"></script>
+    <script src="teams-ctrl.js"></script>
+    <script src="setup-ctrl.js"></script>
+    <script src="scoreboard-ctrl.js"></script>
 
 </head>
 <body ng-controller="mainController">
-
     <!-- HEADER AND NAVBAR -->
     <header>
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="/">Beach Volleyball Scorer</a>
+                    <a class="navbar-brand" href="/">{{'APP_TITLE' | translate}}</a>
                 </div>
 
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
-                    <li><a href="#setup"><i class="fa fa-info"></i> Setup</a></li>
-                    <li><a href="#pickTeams"><i class="fa fa-hospital-o"></i> New</a></li>
-                    <li><a href="#about"><i class="fa fa-shield"></i> About</a></li>
-                    <li><a href="#contact"><i class="fa fa-comment"></i> Contact</a></li>
+                <ul class="nav navbar-nav navbar-left">
+                    <!--
+                                        <li><a ng-href="#"><i class="fa fa-home"></i> Home</a></li>
+                    -->
+                    <li><a ng-href="#setup"><i class="fa fa-info"></i> {{'NAV_SETUP' | translate}}</a></li>
+                    <li><a ng-href="#pickTeams"><i class="fa fa-user"></i> {{'NAV_TEAMS' | translate}}</a></li>
+                    <li><a ng-href="#liveScoring"><i class="fa fa-hospital-o"></i> {{'NAV_GAME' | translate}}</a></li>
+                    <li><a ng-href="#scoreboard"><i class="fa fa-calendar-o"></i> {{'NAV_SCOREBOARD' | translate}}</a></li>
+                    <li><a ng-href="#stats"><i class="fa fa-bar-chart-o"></i> {{'NAV_STATS' | translate}}</a></li>
+                    <li><a ng-href="#login"><i class="fa fa-facebook"></i> {{'NAV_LOG_IN' | translate}}</a></li>
+                    <li><a ng-href="#about"><i class="fa fa-shield"></i> {{'NAV_ABOUT' | translate}}</a></li>
                 </ul>
             </div>
         </nav>
     </header>
 
     <!-- MAIN CONTENT AND INJECTED VIEWS -->
-    <div class="container" data-ng-view></div>
+    <div class="container-fluid col-md-4" ng-view></div>
 
 </body>
 </html>

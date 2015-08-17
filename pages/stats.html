@@ -1,0 +1,104 @@
+﻿<div id="top" class="panel panel-default">
+    <div class="panel-heading">
+        <form class="form-horizontal" role="search">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="{{'ENTER_PLAYER_NAME' | translate}}" name="srch-term" id="srch-term" ng-model="filterSearch">
+                <div class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-click="expanded = !expanded"><i ng-class="{true: 'glyphicon glyphicon-chevron-up' , false: 'glyphicon glyphicon-chevron-down' }[expanded]"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="panel-body" ng-show="expanded">
+        <div class="input-group">
+            <ul class=" list-unstyled" ng-repeat="person in people | filter:filterSearch">
+                <li>
+                    <a href="" ng-click="addPlayerStatsFromDb(people.$keyAt($index), person)">{{ person.nik }} ({{person.name}})</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default" ng-show="data.players">
+    <div class="panel-heading" translate>
+        POINTS_WON_ON_SERVE
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped">
+            <tr ng-repeat="player in data.players track by $index">
+                <td>
+                    <a href="" type="button" ng-click="addPlayerStats(player)">{{player.nik}}</a>
+                </td>
+                <td>{{player.wonOnServe}} / {{player.servedTotal}}</td>
+                <td>{{player.wonOnServe/player.servedTotal * 100  | number:0}}%</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <ul class="list-unstyled">
+        <li ng-repeat="item in data.playerStats">
+            <p>{{item.player.nik}}</p>
+            <table class="table">
+                <tr>
+                    <td translate><strong>SERVE</strong></td>
+                    <td>{{item.serve.1 + item.serve.2 + item.serve.3}}</td>
+                    <td translate>MISS</td>
+                    <td>{{item.serve.1}}</td>
+                    <td translate>IN_PLAY</td>
+                    <td>{{item.serve.2}}</td>
+                    <td translate>ACE</td>
+                    <td>{{item.serve.3}}</td>
+                </tr>
+                <tr>
+                    <td translate><strong>RECEIVE</strong></td>
+                    <td>{{item.receive.1 + item.receive.2 + item.receive.3}}</td>
+                    <td translate>MISTAKE</td>
+                    <td>{{item.receive.1}}</td>
+                    <td translate>IN_PLAY</td>
+                    <td>{{item.receive.2}}</td>
+                    <td translate>GOOD</td>
+                    <td>{{item.receive.3}}</td>
+                </tr>
+                <tr>
+                    <td translate><strong>SET</strong></td>
+                    <td>{{item.set.1 + item.set.2 + item.set.3}}</td>
+                    <td translate>MISTAKE</td>
+                    <td>{{item.set.1}}</td>
+                    <td translate>IN_PLAY</td>
+                    <td>{{item.set.2}}</td>
+                    <td translate>GOOD</td>
+                    <td>{{item.set.3}}</td>
+                </tr>
+                <tr>
+                    <td translate><strong>ATTACK</strong></td>
+                    <td>{{item.attack.1 + item.attack.2 + item.attack.3}}</td>
+                    <td translate>MISTAKE</td>
+                    <td>{{item.attack.1}}</td>
+                    <td translate>IN_PLAY</td>
+                    <td>{{item.attack.2}}</td>
+                    <td translate>KILL</td>
+                    <td>{{item.attack.3}}</td>
+                </tr>
+                <tr>
+                    <td translate><strong>BLOCK</strong></td>
+                    <td>{{item.block.1 + item.block.2 + item.block.3}}</td>
+                    <td translate>MISTAKE</td>
+                    <td>{{item.block.1}}</td>
+                    <td translate>IN_PLAY</td>
+                    <td>{{item.block.2}}</td>
+                    <td translate>KILL</td>
+                    <td>{{item.block.3}}</td>
+                </tr>
+            </table>
+        </li>
+    </ul>
+
+</div>
+
+<div class="row" ng-show="data.playerStats.length > 0">
+    <button type="button" class="btn active" ng-click="clearStatsList()" translate>
+        CLEAR_LIST
+    </button>
+</div>
+
